@@ -3,7 +3,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import seaborn as sns
 
-prm_file = "output/chr3_prm.csv"
+prm_file = "output/balsac/chr3/prm.csv"
 prm_df = pd.read_csv(prm_file)
 
 prm_df['proband1'] = prm_df.columns.values
@@ -18,7 +18,7 @@ order_cols = [str(i) for i in order_cols]
 # Get relative information
 relative_df = pd.read_csv("data/balsac_relatives.csv")
 relative_df = relative_df.loc[relative_df['proband1'].isin(selected_df['ind']) & relative_df['proband2'].isin(selected_df['ind'])]
-relative_df = relative_df[['proband1', 'proband2', 'generation', 'relationship']]
+relative_df = relative_df[['proband1', 'proband2', 'kinship', 'relationship']]
 
 grm_dir = "grms/balsac/chr3/"
 full_df = pd.DataFrame()

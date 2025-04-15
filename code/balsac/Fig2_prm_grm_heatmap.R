@@ -14,13 +14,12 @@ library(scales)
 set.seed(345)
 
 # File paths
-grm_file <- "path_to_branch_grm"
-prm_file <- "path_to_prm"
-meta_file <- "path_to_metadata"
+grm_file <- "output/balsac/chr3/sim1/grm_branch_recap.csv"
+prm_file <- "output/balsac/chr3/prm_subsample.csv"
+meta_file <- "data/balsac_subsample_meta.csv"
 grm_filename <- file_path_sans_ext(basename(grm_file))
 prm_filename <- file_path_sans_ext(basename(prm_file))
-output_dir <- dirname(grm_file)
-plot_file <- file.path(output_dir, "grm_prm_heatmaps.jpg")
+plot_file <- "plots/Fig2_grm_prm_heatmaps.jpg"
 
 # ------------------------------------------------------------------------------
 # 1) Read a symmetric NxN matrix from CSV
@@ -42,7 +41,7 @@ read_symmetric_matrix <- function(path) {
 process_relatedness <- function(data_file, meta_file) {
   mat <- read_symmetric_matrix(data_file)
   metadata <- read_csv(meta_file, col_names = TRUE) %>%
-    rename(depth = average_depth, proband = noid) %>%
+    rename(depth = average_depth) %>%
     mutate(proband = as.character(proband)) %>%
     distinct(proband, proband_region, depth)
   matrix_ids <- rownames(mat)
@@ -177,13 +176,13 @@ base_transparent <- list(
 plot_egrm <- ggplot(upper_egrm, aes(x = proband1, y = proband2, fill = Relatedness)) +
   geom_tile() +
   scale_fill_gradient2(
-    name = "Site GRM",
+    name = "Branch GRM",
     low = "#2C7BB6", mid = "white", high = "#D7191C", midpoint = 0,
     trans = scales::pseudo_log_trans(sigma = 10),
     #   limits = c(-5000, 5000),
     oob = squish,
     na.value = "black",
-    breaks = c(-10000, -1000, 0, 1000, 10000),
+    breaks = c(-1000, -100, 0, 100, 1000),
   ) +
   base_transparent
 plot_egrm <- plot_egrm + theme(plot.title = element_blank())
@@ -241,7 +240,6 @@ final_overlay <- plot_grid(
 
 final_overlay
 
-plot_file <- "plots/site_grm_prm_heatmap.jpg"
 # --- Save the final composite ---
 ggsave(plot_file, plot = final_overlay, width = 10, height = 10, dpi = 300)
 cat("Overlayed heatmaps with legends, title, and aligned region bar saved to:", plot_file, "\n")

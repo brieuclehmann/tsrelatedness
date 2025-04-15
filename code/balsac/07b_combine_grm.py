@@ -10,8 +10,6 @@ def main(args):
     chrom_lengths = pd.read_csv("data/maps/GRCh37_chromosome_length.csv")
     mode = 'branch'
 
-    meta_df = pd.read_csv("genome_simulations/data/balsac_proband_meta.csv")
-
     chr1_grm_file = f"output/balsac/chr1/sim{args.repetition}/grm_{mode}_recap.csv"
     grm = pd.read_csv(chr1_grm_file)
     col_names = grm.columns.values

@@ -32,8 +32,7 @@ The last pair of analysis scripts performs branch PCA directly on the simulated 
 
 ### Plotting scripts
 
-Plotting scripts `plot_*.py` are work-in-progress.
-
+The scripts `Fig*.py` are included to reproduce Figures 1-3 in the main manuscripts.
 
 ## Citations
 

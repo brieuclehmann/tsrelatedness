@@ -7,7 +7,7 @@ set.seed(42)
 
 theme_set(theme_bw())
 
-full_df <- read_csv("path_to_combined_grms")
+full_df <- read_csv("output/relatives_relatedness.csv")
 
 full_df <- full_df |>
   mutate(relationship = if_else(proband1 == proband2, 'self', relationship)) |>
@@ -20,17 +20,15 @@ full_df$relationship <- factor(full_df$relationship,
                                               "second cousins", "third cousins", "other")))
 sub_df <- full_df |>
   filter(relationship != "other") |>
-  filter(type == "branch_recap" & (proband_region1 == proband_region2)) |>
-  group_by(relationship, proband_region1) |>
-  slice_sample(prop = 0.05) |>
+  filter(type == "branch_recap") |>
+  slice_sample(prop = 0.25) |>
   ungroup()
 
 na_df <- full_df |>
   filter(relationship == "other") |>
 #  filter(prm > 1e-10 & is.na(generation)) |>
-  filter(type == "branch_recap" & (proband_region1 == proband_region2)) |>
-  group_by(proband_region1) |>
-  slice_sample(prop = 0.002) |>
+  filter(type == "branch_recap") |>
+  slice_sample(prop = 0.01) |>
   ungroup()
 
 sub_df <- bind_rows(sub_df, na_df)
@@ -59,5 +57,5 @@ p1<- sub_df |>
   scale_colour_viridis_d()
 
              
-ggsave("plots/branch_recap_sim_boxplot_combined_behind.pdf", p1, height = 4, width = 7, dpi=500)
+ggsave("plots/Fig3_grm_boxplots.pdf", p1, height = 4, width = 7, dpi=500)
 

@@ -44,7 +44,7 @@ def main():
     ### Pedigree PCA ###
     ####################
     n_pc = 8
-    prm_df = pd.read_csv("output/chr3/prm_full.csv")
+    prm_df = pd.read_csv("output/balsac/chr3/prm_full.csv")
 
     prm_ind = prm_df.columns.values
     prm_df = prm_df.set_index(prm_ind)
