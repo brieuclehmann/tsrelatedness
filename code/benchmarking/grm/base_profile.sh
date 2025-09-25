@@ -1,7 +1,7 @@
 #!/bin/bash -l
 #$ -cwd
 #$ -pe smp 1
-#$ -l h_rt=2:00:00
+#$ -l h_rt=12:00:00
 #$ -l mem=4G
 #$ -t 1-20
 #$ -o logs/grm_benchmarking.out
