@@ -2,8 +2,8 @@
 #$ -cwd
 #$ -pe smp 1
 #$ -l h_rt=2:00:00
-#$ -l mem=1G
-#$ -t 1-27
+#$ -l mem=4G
+#$ -t 1-20
 #$ -o logs/grm_benchmarking.out
 #$ -e logs/grm_benchmarking.err
 #$ -M b.lehmann@ucl.ac.uk

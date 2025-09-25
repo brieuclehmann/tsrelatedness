@@ -1,4 +1,3 @@
-
 import tskit
 import msprime
 import sys
@@ -21,10 +20,10 @@ this_sim = param_df.loc[rep]
 
 num_samples = int(this_sim["Num_samples"])          # Number of samples (individuals)
 seq_length =  int(this_sim["Sequence_length"])      # Length of the genomic sequence
-mutation_rate = float(this_sim["Mutation_rate"])    # Mutation rate per site
 method = this_sim["Method"]                         # Method to use for computing the GRM
 mode = this_sim["Mode"]                             # Mode (site v branch) to use for computing the GRM
 
+mutation_rate = 10**-8      # Mutation rate
 seed = 42                   # Random seed
 recombination_rate = 1e-8   # Recombination rate per base
 Ne = 1e4                    # Effective population size
@@ -37,11 +36,11 @@ sim_df = pd.DataFrame(columns=["rep", "num_samples", "seq_length", "mutation_rat
 for i in range(num_simulations):
     # Simulate a tree sequence with mutations
     ts = msprime.simulate(num_samples,
-                            length=seq_length,
-                            recombination_rate=recombination_rate,
-                            Ne=Ne,
-                            mutation_rate=mutation_rate,
-                            random_seed=seed+i)
+                          length=seq_length,
+                          recombination_rate=recombination_rate,
+                          Ne=Ne,
+                          mutation_rate=mutation_rate,
+                          random_seed=seed+i)
     sample_sets = [[i] for i in ts.samples()]
     # Measure the time for GRM computation
     if method == "eGRM":
@@ -54,7 +53,6 @@ for i in range(num_simulations):
     sim_df = pd.concat([sim_df, pd.DataFrame([{"rep": i,
                                                "num_samples": num_samples,
                                                "seq_length": seq_length,
-                                               "mutation_rate": mutation_rate,
                                                "method": method,
                                                "mode": mode,
                                                "time": grm_time}])])

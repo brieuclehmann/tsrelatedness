@@ -2,8 +2,8 @@
 #$ -cwd
 #$ -pe smp 1
 #$ -l h_rt=2:00:00
-#$ -l mem=1G
-#$ -t 1-63
+#$ -l mem=4G
+#$ -t 1-55
 #$ -o logs/pca_benchmarking.out
 #$ -e logs/pca_benchmarking.err
 #$ -M b.lehmann@ucl.ac.uk
