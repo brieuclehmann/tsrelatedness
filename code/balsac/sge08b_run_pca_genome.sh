@@ -3,9 +3,9 @@
 #$ -pe smp 1
 #$ -l h_rt=12:00:00
 #$ -l mem=8G
-#$ -t 3
-#$ -o logs/balsac_grm.out
-#$ -e logs/balsac_grm.err
+#$ -t 1
+#$ -o logs/balsac_pca.out
+#$ -e logs/balsac_pca.err
 #$ -M b.lehmann@ucl.ac.uk
 #$ -m beas
 
@@ -15,9 +15,7 @@ source .venv/bin/activate
 
 echo "Job started at: `date`"
 
-python3 code/balsac/07_compute_grm.py \
--chr $SGE_TASK_ID \
--rep 1
+python3 code/balsac/08b_run_pca_genome.py
 #-censor
 
 echo "Job finished with exit code $? at: `date`"

@@ -23,7 +23,7 @@ suppressPackageStartupMessages({
 # ─────────────────────────────────────────────────────────────────────────────
 
 bg_map_file       <- "plots/background_map_Jan2025_tsrel.rds"
-pca_branch_csv <- "output/balsac/balsac_branch_chr3.csv"
+pca_branch_csv <- "output/balsac/balsac_branch_recap.csv"
 pca_pedigree_csv  <- "output/balsac/pedigree_pca_noid.csv"
 output_file       <- "plots/Fig1_map_and_pca_grid.jpg"
 
@@ -294,7 +294,7 @@ combined_plot <- (pca_pedigree_plot_12 | pca_pedigree_plot_34 | pca_pedigree_plo
   plot_layout(heights = c(1, 1, 1)) + 
   plot_annotation(tag_levels = "A")
 
-output_file <- "plots/FigA1_map_and_pca_grid.jpg"
+output_file <- "plots/Fig1_map_and_pca_grid.jpg"
 # Save final combined figure with adjusted dimensions
 ggsave(filename = output_file, plot = combined_plot, width = 11, height = 10, dpi = 300)
 cat("Combined plot saved to:", output_file, "\n")
