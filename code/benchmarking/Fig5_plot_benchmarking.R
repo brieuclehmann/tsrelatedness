@@ -9,7 +9,7 @@ library(patchwork)
 #### GRM ####
 #############
 
-sim_df <- read_csv("path_to_grm_benchmarking")
+sim_df <- read_csv("output/benchmarking/grm_results.csv")
 
 # Default values
 default_sample_size <- 2^10
@@ -52,7 +52,10 @@ p1 <- ggplot(plot_df, aes(x = num_samples, y = time, colour = Method)) +
                 limits = c(100,10000)) + 
   scale_y_log10(labels = label_log()) +
   labs(x = "Number of Samples", y = "Time (s)") +
-  theme_minimal()
+  theme_minimal() +
+  # Add reference lines
+  geom_abline(intercept = log10(0.00032), slope = 2, 
+              linetype = "dotted", colour = "grey50", alpha = 0.5)
 
 p1 <- p1 +
   geom_text_repel(
@@ -63,7 +66,7 @@ p1 <- p1 +
     size = 3,
     show.legend = FALSE
   ) +
-  coord_cartesian(clip = "off")
+  coord_cartesian(clip = "off") 
 
 # PLOT SEQUENCE LENGTH
 plot_df <- sim_df %>%
@@ -89,7 +92,10 @@ p2 <- ggplot(plot_df, aes(x = seq_length, y = time, colour = Method)) +
                      labels = trans_format("log10", math_format(10^.x))) +
   scale_y_log10(labels = label_log()) +
   labs(x = "Sequence length", y = "Time (s)") +
-  theme_minimal()
+  theme_minimal()  +
+  # Add reference lines
+  geom_abline(intercept = log10(0.00004), slope = 1, 
+              linetype = "dotted", colour = "grey50", alpha = 0.5)
 
 p2 <- p2 +
   geom_text(
@@ -115,7 +121,7 @@ ggsave(filename = paste0("plots/SIFig_benchmarking_plot.png"), plot = p3, width 
 #### PCA ####
 #############
 
-sim_df <- read_csv("output/pca_results.csv")
+sim_df <- read_csv("output/benchmarking/pca_results.csv")
 
 # Default values
 default_sample_size <- 2^10
@@ -149,7 +155,12 @@ p4 <- ggplot(plot_df, aes(x = num_samples, y = time,
   scale_y_log10(labels = label_log()) +
   labs(x = "Number of Samples", y = "Time (s)") +
   theme_minimal() +
-  theme(legend.position = "bottom")
+  theme(legend.position = "bottom") +
+  # Add reference lines
+  geom_abline(intercept = log10(0.00032), slope = 1, 
+              linetype = "dotted", colour = "grey50", alpha = 0.5)
+
+p4
 
 p4 <- p4 +
   geom_text(
@@ -189,7 +200,10 @@ p5 <- ggplot(plot_df, aes(x = seq_length, y = time,
   scale_y_log10(labels = label_log()) +
   labs(x = "Sequence length", y = "Time (s)") +
   theme_minimal() +
-  theme(legend.position = "bottom")
+  theme(legend.position = "bottom") +
+  # Add reference lines
+  geom_abline(intercept = log10(0.0000001), slope = 1, 
+              linetype = "dotted", colour = "grey50", alpha = 0.5)
 
 
 p5 <- p5 +

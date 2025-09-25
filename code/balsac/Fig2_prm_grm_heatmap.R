@@ -14,9 +14,9 @@ library(scales)
 set.seed(345)
 
 # File paths
-grm_file <- "output/balsac/chr3/sim1/grm_branch_recap.csv"
-prm_file <- "output/balsac/chr3/prm_subsample.csv"
-meta_file <- "data/balsac_subsample_meta.csv"
+grm_file <- "output/balsac/grm_branch_recap_noid.csv"
+prm_file <- "output/balsac/prm_subsample_noid.csv"
+meta_file <- "data/balsac_proband_meta_noid.csv"
 grm_filename <- file_path_sans_ext(basename(grm_file))
 prm_filename <- file_path_sans_ext(basename(prm_file))
 plot_file <- "plots/Fig2_grm_prm_heatmaps.jpg"
@@ -42,7 +42,7 @@ process_relatedness <- function(data_file, meta_file) {
   mat <- read_symmetric_matrix(data_file)
   metadata <- read_csv(meta_file, col_names = TRUE) %>%
     rename(depth = average_depth) %>%
-    mutate(proband = as.character(proband)) %>%
+    mutate(proband = as.character(noid)) %>%
     distinct(proband, proband_region, depth)
   matrix_ids <- rownames(mat)
   metadata <- metadata %>% filter(proband %in% matrix_ids)

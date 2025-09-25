@@ -57,7 +57,10 @@ def main():
     prm_ind = prm_df.columns.values
 
     prm_mat = prm_df.to_numpy()
+    # Center the matrix
     n_ind = prm_mat.shape[0]
+    centering_mat = np.eye(n_ind) - np.ones((n_ind, n_ind)) / n_ind
+    prm_mat = centering_mat @ prm_mat @ centering_mat
     prm_eigval, prm_eigvec = eigh(prm_mat, subset_by_index=[n_ind-n_pc-1, n_ind-1])
     pc_prm = (prm_mat @ prm_eigvec[:, ::-1]) 
     pc_prm_df = pd.DataFrame(pc_prm)

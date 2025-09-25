@@ -22,9 +22,9 @@ suppressPackageStartupMessages({
 # 1) File Paths (edit as needed)
 # ─────────────────────────────────────────────────────────────────────────────
 
-bg_map_file       <- "utils/background_map_Jan2025_tsrel.rds"
-pca_branch_csv    <- "path_to_balsac_branch_pca.csv"
-pca_pedigree_csv  <- "path_to_balsac_pedigree_pca.csv"
+bg_map_file       <- "plots/background_map_Jan2025_tsrel.rds"
+pca_branch_csv <- "output/balsac/balsac_branch_chr3.csv"
+pca_pedigree_csv  <- "output/balsac/pedigree_pca_noid.csv"
 output_file       <- "plots/Fig1_map_and_pca_grid.jpg"
 
 # ─────────────────────────────────────────────────────────────────────────────
@@ -209,9 +209,12 @@ load_pca_data <- function(file_path) {
 # Load PCA datasets
 pca_branch_df <- load_pca_data(pca_branch_csv)
 pca_pedigree_df <- load_pca_data(pca_pedigree_csv)
+pca_pedigree_df <- pca_pedigree_df |>
+  mutate(PC4 = -PC4, PC3 = -PC3, PC5 = -PC5)
+
 
 # PC1 vs. PC2 for Branch PCA
-pca_plot_12 <- ggplot(pca_branch_df, aes(x = PC1, y = -PC2, color = region)) +
+pca_plot_12 <- ggplot(pca_branch_df, aes(x = -PC1, y = PC2, color = region)) +
   geom_point(size = 1, alpha = 0.8) +
   scale_color_manual(values = region_colors) +
   labs(x = "PC1", y = "PC2") +
@@ -222,7 +225,7 @@ pca_plot_12 <- ggplot(pca_branch_df, aes(x = PC1, y = -PC2, color = region)) +
   )
 
 # PC3 vs. PC4 for Branch PCA
-pca_plot_34 <- ggplot(pca_branch_df, aes(x = -PC3, y = -PC4, color = region)) +
+pca_plot_34 <- ggplot(pca_branch_df, aes(x = PC3, y = PC4, color = region)) +
   geom_point(size = 1, alpha = 0.8) +
   scale_color_manual(values = region_colors) +
   labs(x = "PC3", y = "PC4") +
@@ -242,6 +245,7 @@ pca_plot_56 <- ggplot(pca_branch_df, aes(x = PC5, y = PC6, color = region)) +
     legend.position = "none",
     axis.title = element_text(size = 14)
   )
+
 
 # PC1 vs. PC2 for Pedigree PCA
 pca_pedigree_plot_12 <- ggplot(pca_pedigree_df, aes(x = -PC1, y = PC2, color = region)) +
@@ -287,9 +291,10 @@ pca_pedigree_plot_56 <- ggplot(pca_pedigree_df, aes(x = PC5, y = PC6, color = re
 combined_plot <- (pca_pedigree_plot_12 | pca_pedigree_plot_34 | pca_pedigree_plot_56) /
   (pca_plot_12 | pca_plot_34 | pca_plot_56) /
   geo_plot_with_inset +
-  plot_layout(heights = c(1, 1, 2)) + 
+  plot_layout(heights = c(1, 1, 1)) + 
   plot_annotation(tag_levels = "A")
 
+output_file <- "plots/FigA1_map_and_pca_grid.jpg"
 # Save final combined figure with adjusted dimensions
-ggsave(filename = output_file, plot = combined_plot, width = 11, height = 13, dpi = 300)
+ggsave(filename = output_file, plot = combined_plot, width = 11, height = 10, dpi = 300)
 cat("Combined plot saved to:", output_file, "\n")
