@@ -9,7 +9,26 @@ library(patchwork)
 #### GRM ####
 #############
 
-sim_df <- read_csv("output/benchmarking/grm_results.csv")
+grm_file <- "output/benchmarking/grm_results.csv"
+n_sim <- 20
+if (file.exists(grm_file)) {
+  sim_df <- read_csv(grm_file)
+} else {
+  for (i in 1:n_sim) {
+    this_file <- paste0("output/benchmarking/grm/sim", i-1, ".csv")
+    if (!file.exists(this_file)) {
+      next
+    }
+    temp_df <- read_csv(this_file)
+    if (i == 1) {
+      sim_df <- temp_df
+    } else {
+      sim_df <- rbind(sim_df, temp_df)
+    }
+  }
+  write_csv(sim_df, grm_file)
+}
+
 
 # Default values
 default_sample_size <- 2^10
@@ -24,14 +43,12 @@ gg_color_hue <- function(n) {
 colours <- gg_color_hue(3)
 
 sim_df <- sim_df %>%
-  filter(mode == "branch") %>%
-  filter(method != "ts.summary_stat") %>%
-  select(-mode)
+  filter(method != "ts.summary_stat")
 
 # PLOT NUMBER OF SAMPLES
 sim_df$Method <- sim_df$method
 plot_df <- sim_df %>%
-  filter(seq_length == default_sequence_length, mutation_rate == default_mutation_rate) %>%
+  filter(seq_length == default_sequence_length) %>%
   group_by(Method, num_samples) %>%
   summarise(
     time_min = min(time),
@@ -70,7 +87,7 @@ p1 <- p1 +
 
 # PLOT SEQUENCE LENGTH
 plot_df <- sim_df %>%
-  filter(num_samples == default_sample_size, mutation_rate == default_mutation_rate) %>%
+  filter(num_samples == default_sample_size) %>%
   group_by(Method, seq_length) %>%
   summarise(
     time_min = min(time),
@@ -121,7 +138,26 @@ ggsave(filename = paste0("plots/SIFig_benchmarking_plot.png"), plot = p3, width 
 #### PCA ####
 #############
 
-sim_df <- read_csv("output/benchmarking/pca_results.csv")
+pca_file <- "output/benchmarking/pca_results.csv"
+
+n_sim <- 20
+if (file.exists(pca_file)) {
+  sim_df <- read_csv(pca_file)
+} else {
+  for (i in 1:n_sim) {
+    this_file <- paste0("output/benchmarking/pca/sim", i-1, ".csv")
+    if (!file.exists(this_file)) {
+      next
+    }
+    temp_df <- read_csv(this_file)
+    if (i == 1) {
+      sim_df <- temp_df
+    } else {
+      sim_df <- rbind(sim_df, temp_df)
+    }
+  }
+  write_csv(sim_df, pca_file)
+}
 
 # Default values
 default_sample_size <- 2^10

@@ -2,6 +2,8 @@
 
 This repository contains all the scripts used to generate the results in the manuscript 'On ARGS, pedigrees, and genetic relatedness matrices'. There are two main sets of scripts, one used to generate the benchmarking results (see `code/benchmarking`) and one used to generate the results from the Balsac analysis (see `code/balsac`). 
 
+Contact Brieuc Lehmann at b.lehmann@ucl.ac.uk for any questions regarding the code.
+
 ## Benchmarking simulations
 
 There are three sets of benchmarking simulations, one to compare genetic relatedness matrix (GRM) computation, one to compare principal components analysis (PCA), and one to measure the time taken for matrix-vector product calculations. For first two first run `00_set_params.py` in the corresponding folder to set up the benchmarking simulation parameters. The main script is given in `01_base_profile.py`. The bash script `base_profile.sh` contains SGE instructions to run the simulations on the UCL cluster. You will need to adjust this script if you wish to run the benchmarking simulations on your local machine or your institution's cluster.
